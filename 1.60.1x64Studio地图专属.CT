@@ -1,0 +1,2773 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CheatTable CheatEngineTableVersion="45">
+  <CheatEntries>
+    <CheatEntry>
+      <ID>1807637772</ID>
+      <Description>"紧凑模式--浏览(作者:账号已注销)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+{$Lua}
+function cycleFullCompact(sender,force)
+local state = not(compactmenuitem.Caption == '默认')
+if force~=nil then state = not force end
+compactmenuitem.Caption = state and '默认' or '紧凑'
+ getMainForm().Splitter1.Visible = state
+ getMainForm().Panel4.Visible = state
+ getMainForm().Panel5.Visible = state
+ end
+ function addCompactMenu()
+ if compactmenualreadyexists then return end
+  local parent = getMainForm().Menu.Items
+  compactmenuitem = createMenuItem(parent)
+  parent.add(compactmenuitem)
+  compactmenuitem.Caption = '默认'
+  compactmenuitem.OnClick = cycleFullCompact
+   compactmenualreadyexists = 'yes'
+   end
+   addCompactMenu(); cycleFullCompact(nil,true)
+
+[DISABLE]
+
+luacall(cycleFullCompact(nil,false))
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689630</ID>
+      <Description>"当前极限帧数"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>libEngine.dll+154D948</Address>
+      <Offsets>
+        <Offset>3F0</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689680</ID>
+      <Description>"当前登入的账号UIN"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>4 Bytes</VariableType>
+      <Address>libiworld.dll+1A790D0</Address>
+      <Offsets>
+        <Offset>8</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1</ID>
+      <Description>"当前登入的账号昵称"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>String</VariableType>
+      <Length>36</Length>
+      <Unicode>0</Unicode>
+      <CodePage>0</CodePage>
+      <ZeroTerminate>1</ZeroTerminate>
+      <Address>libiworld.dll+1A790D0</Address>
+      <Offsets>
+        <Offset>49</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807637775</ID>
+      <Description>"连跳(减缓降落速度)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+libSandboxEngine.dll+7D1919+6:
+DB 01
+[DISABLE]
+libSandboxEngine.dll+7D1919+6:
+DB 00
+{
+libSandboxEngine.dll+AEA397 - C6 87 4B010000 00     - mov byte ptr [rdi+0000014B],00
+libSandboxEngine.dll+AEA39E - F3 44 0F10 AF 3C020000  - movss xmm13,[rdi+0000023C]
+libSandboxEngine.dll+AEA3A7 - F3 44 0F10 A7 40020000  - movss xmm12,[rdi+00000240]
+libSandboxEngine.dll+AEA3B0 - F3 44 0F10 9F 44020000  - movss xmm11,[rdi+00000244]
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807637953</ID>
+      <Description>"加速"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(newmem,2048,libSandboxEngine.dll+7D3BD7)
+//F3 44 0F 59 81 xx xx xx xx 0F
+label(returnhere)
+label(originalcode)
+label(exit)
+alloc(Speed,8)
+registersymbol(Speed)
+Speed:
+DD (float)6000.0
+newmem:
+originalcode:
+push rax
+mov rax,Speed
+mov rax,[rax]
+mov [rcx+00000170],rax
+pop rax
+mulss xmm3,[rcx+00000170]
+exit:
+jmp returnhere
+libSandboxEngine.dll+7D3BD7:
+jmp newmem
+nop 3
+returnhere:
+[DISABLE]
+unregistersymbol(Speed)
+dealloc(Speed)
+dealloc(newmem)
+libSandboxEngine.dll+7D3BD7:
+db F3 0F 59 99 70 01 00 00
+//mulss xmm8,[rcx+00000170]
+{
+libSandboxEngine.dll+7D3BCA - F3 0F10 99 78010000   - movss xmm3,[rcx+00000178]
+libSandboxEngine.dll+7D3BD2 - EB 03                 - jmp libSandboxEngine.dll+7D3BD7
+libSandboxEngine.dll+7D3BD4 - 0F28 DE               - movaps xmm3,xmm6
+libSandboxEngine.dll+7D3BD7 - F3 0F59 99 70010000   - mulss xmm3,[rcx+00000170]
+libSandboxEngine.dll+7D3BDF - 45 0F57 C9            - xorps xmm9,xmm9
+libSandboxEngine.dll+7D3BE3 - F3 44 0F10 81 CC010000  - movss xmm8,[rcx+000001CC]
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1807637954</ID>
+          <Description>"速度"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>Speed</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807637784</ID>
+      <Description>"穿墙(部分墙无效)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+libEngine.dll+98B9D7:
+DB 0F 85
+[DISABLE]
+libEngine.dll+98B9D7:
+DB 0F 84
+{libEngine.dll+91F570 - 0F5C C2               - subps xmm0,xmm2
+libEngine.dll+91F573 - 0F5F D0               - maxps xmm2,xmm0
+libEngine.dll+91F576 - 41 0F58 4F 10         - addps xmm1,[r15+10]
+libEngine.dll+91F57B - 0FC2 D1 02            - cmpleps xmm2,xmm1
+libEngine.dll+91F57F - 0F50 C2               - movmskps eax,xmm2
+libEngine.dll+91F582 - 83 E0 07              - and eax,07
+libEngine.dll+91F585 - 3C 07                 - cmp al,07
+libEngine.dll+91F587 - 0F84 76FFFFFF         - je libEngine.dll+91F503
+libEngine.dll+91F58D - E9 BF000000           - jmp libEngine.dll+91F651
+libEngine.dll+91F592 - 8B E9                 - mov ebp,ecx
+libEngine.dll+91F594 - D1 ED                 - shr ebp,1
+libEngine.dll+91F596 - 83 E5 0F              - and ebp,0F
+libEngine.dll+91F599 - 8B DD                 - mov ebx,ebp
+libEngine.dll+91F59B - 48 C1 E9 05           - shr rcx,05
+
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807637786</ID>
+      <Description>"临时隐藏方块贴图(透视)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+libEngine.dll+3B7C38:
+DB 0F 85
+[DISABLE]
+libEngine.dll+3B7C38:
+DB 0F 84
+//49 8B 8D xx xx xx xx 48 85 C9 0F 84
+{libEngine.dll+39D9CA - 48 83 EC 40           - sub rsp,40
+libEngine.dll+39D9CE - 49 8B D9              - mov rbx,r9
+libEngine.dll+39D9D1 - 49 8B F0              - mov rsi,r8
+libEngine.dll+39D9D4 - 48 8B FA              - mov rdi,rdx
+libEngine.dll+39D9D7 - 4C 8B F9              - mov r15,rcx
+libEngine.dll+39D9DA - 4C 8B 69 48           - mov r13,[rcx+48]
+libEngine.dll+39D9DE - 49 8B 8D F0000000     - mov rcx,[r13+000000F0]
+libEngine.dll+39D9E5 - 48 85 C9              - test rcx,rcx
+libEngine.dll+39D9E8 - 0F84 48020000         - je libEngine.dll+39DC36
+}
+</AssemblerScript>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689629</ID>
+      <Description>"Studio传送(只传送到移动的玩家)(不能和吸人一起开)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(newmem,2048,libSandboxEngine.dll+7BC5E3)
+label(returnhere)
+label(originalcode)
+label(exit)
+alloc(gaodu,4)
+registersymbol(gaodu)
+gaodu:
+dd (float)-150
+newmem:
+originalcode:
+movss [rdi+08],xmm2
+push rax
+push rbx
+mov rax,POS
+mov rax,[rax]
+mov rbx,gaodu
+movss [rax],xmm0
+addss xmm1,[rbx]
+movss [rax+4],xmm1
+movss [rax+8],xmm2
+pop rbx
+pop rax
+exit:
+jmp returnhere
+libSandboxEngine.dll+7BC5E3:
+jmp newmem
+returnhere:
+[DISABLE]
+unregistersymbol(gaodu)
+dealloc(gaodu)
+dealloc(newmem)
+libSandboxEngine.dll+7BC5E3:
+db F3 0F 11 57 08
+//movss [rdi+08],xmm2
+
+{libSandboxEngine.dll+AE46C1 - EB 17                 - jmp libSandboxEngine.dll+AE46DA
+libSandboxEngine.dll+AE46C3 - 0F10 5C 24 3C         - movups xmm3,[rsp+3C]
+libSandboxEngine.dll+AE46C8 - F3 0F10 54 24 38      - movss xmm2,[rsp+38]
+libSandboxEngine.dll+AE46CE - F3 0F10 4C 24 34      - movss xmm1,[rsp+34]
+libSandboxEngine.dll+AE46D4 - F3 0F10 44 24 30      - movss xmm0,[rsp+30]
+libSandboxEngine.dll+AE46DA - F3 0F11 07            - movss [rdi],xmm0
+libSandboxEngine.dll+AE46DE - F3 0F11 4F 04         - movss [rdi+04],xmm1
+libSandboxEngine.dll+AE46E3 - F3 0F11 57 08         - movss [rdi+08],xmm2
+libSandboxEngine.dll+AE46E8 - 0F11 5F 0C            - movups [rdi+0C],xmm3
+libSandboxEngine.dll+AE46EC - 49 8B 0E              - mov rcx,[r14]
+libSandboxEngine.dll+AE46EF - 48 8B C7              - mov rax,rdi
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1807689631</ID>
+          <Description>"偏离高度"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>gaodu</Address>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689607</ID>
+      <Description>"Studio吸人(只吸移动的目标)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(newmem,2048,libSandboxEngine.dll+7BC5DA)
+label(returnhere)
+label(originalcode)
+label(exit)
+newmem:
+originalcode:
+push rax
+push rbx
+push rcx
+push rdx
+mov rcx,libSandboxGame.dll+47E89D0
+mov rcx,[rcx]
+mov rcx,[rcx+198]
+mov rcx,[RCX+100]
+mov rax,[rcx+308]
+mov rbx,[rcx+30C]
+mov rdx,[rcx+310]
+sub rbx,#80//降低高度
+add rdx,#100//Z偏移量
+cvtsi2ss xmm0,eax
+movss [rdi],xmm0
+cvtsi2ss xmm1,ebx
+movss [rdi+4],xmm1
+cvtsi2ss xmm2,edx
+movss [rdi+8],xmm2
+pop rdx
+pop rcx
+pop rbx
+pop rax
+movss [rdi],xmm0
+movss [rdi+04],xmm1
+exit:
+jmp returnhere
+libSandboxEngine.dll+7BC5DA:
+jmp newmem
+nop 4
+returnhere:
+[DISABLE]
+dealloc(newmem)
+libSandboxEngine.dll+7BC5DA:
+db F3 0F 11 07 F3 0F 11 4F 04
+//movss [rdi],xmm0
+//movss [rdi+04],xmm1
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1807689628</ID>
+          <Description>"吸人加强"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>[ENABLE]
+alloc(newmem,2048,libSandboxEngine.dll+65D60D)
+label(returnhere)
+label(originalcode)
+label(exit)
+newmem:
+originalcode:
+push rdi
+push rbx
+push rcx
+push rdx
+mov rcx,libSandboxGame.dll+47E89D0
+mov rcx,[rcx]
+mov rcx,[rcx+198]
+mov rcx,[RCX+100]
+mov rdi,[rcx+308]
+mov rbx,[rcx+30C]
+mov rdx,[rcx+310]
+sub rbx,#80//降低高度
+add rdx,#100//Z偏移量
+cvtsi2ss xmm0,edi
+movss [rax],xmm0
+cvtsi2ss xmm1,ebx
+movss [rax+4],xmm1
+cvtsi2ss xmm2,edx
+movss [rax+8],xmm2
+pop rdx
+pop rcx
+pop rbx
+pop rdi
+movss xmm0,[rax]
+movss xmm1,[rax+04]
+exit:
+jmp returnhere
+libSandboxEngine.dll+65D60D:
+jmp newmem
+nop 4
+returnhere:
+[DISABLE]
+dealloc(newmem)
+libSandboxEngine.dll+65D60D:
+db F3 0F 10 00 F3 0F 10 48 04
+//movss xmm0,[rax]
+//movss xmm1,[rax+04]
+{libSandboxEngine.dll+9EA41D - 7E 49                 - jle libSandboxEngine.dll+9EA468
+libSandboxEngine.dll+9EA41F - 44 89 88 84000000     - mov [rax+00000084],r9d
+libSandboxEngine.dll+9EA426 - 48 8D 54 24 20        - lea rdx,[rsp+20]
+libSandboxEngine.dll+9EA42B - 48 8B 89 E8030000     - mov rcx,[rcx+000003E8]
+libSandboxEngine.dll+9EA432 - 4D 8B C2              - mov r8,r10
+libSandboxEngine.dll+9EA435 - E8 669E1500           - call libSandboxEngine.dll+B442A0
+libSandboxEngine.dll+9EA43A - 0F10 58 0C            - movups xmm3,[rax+0C]
+libSandboxEngine.dll+9EA43E - F3 0F10 00            - movss xmm0,[rax]
+libSandboxEngine.dll+9EA442 - F3 0F10 48 04         - movss xmm1,[rax+04]
+libSandboxEngine.dll+9EA447 - F3 0F10 50 08         - movss xmm2,[rax+08]
+libSandboxEngine.dll+9EA44C - F3 0F11 03            - movss [rbx],xmm0
+libSandboxEngine.dll+9EA450 - F3 0F11 4B 04         - movss [rbx+04],xmm1
+libSandboxEngine.dll+9EA455 - F3 0F11 53 08         - movss [rbx+08],xmm2
+libSandboxEngine.dll+9EA45A - 0F11 1F               - movups [rdi],xmm3
+libSandboxEngine.dll+9EA45D - 48 8B 5C 24 50        - mov rbx,[rsp+50]
+libSandboxEngine.dll+9EA462 - 48 83 C4 40           - add rsp,40 { 64 }
+//libSandboxEngine.dll+9EA466 - 5F                    - pop rdi
+//libSandboxEngine.dll+9EA467 - C3                    - ret}
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689623</ID>
+      <Description>"取得Stuido自己的坐標"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(newmem,2048,libEngine.dll+4D43AE)
+label(returnhere)
+label(originalcode)
+label(exit)
+alloc(POS,8)
+registersymbol(POS)
+newmem:
+originalcode:
+mov [POS],RAX
+movups xmm8,[rax]
+mov rax,[rdi+78]
+exit:
+jmp returnhere
+libEngine.dll+4D43AE:
+jmp newmem
+nop 3
+returnhere:
+[DISABLE]
+unregistersymbol(POS)
+dealloc(POS)
+dealloc(newmem)
+libEngine.dll+4D43AE:
+db 44 0F 10 00 48 8B 47 78
+//movups xmm8,[rax]
+//mov rax,[rdi+78]
+{libEngine.dll+4A8161 - E9 46010000           - jmp libEngine.dll+4A82AC
+libEngine.dll+4A8166 - 41 8B D6              - mov edx,r14d
+libEngine.dll+4A8169 - E8 4249E8FF           - call libEngine.dll+32CAB0
+libEngine.dll+4A816E - 44 0F10 00            - movups xmm8,[rax]
+libEngine.dll+4A8172 - 48 8B 47 78           - mov rax,[rdi+78]
+libEngine.dll+4A8176 - 44 0F29 44 24 20      - movaps [rsp+20],xmm8
+libEngine.dll+4A817C - 42 8B 1C B0           - mov ebx,[rax+r14*4]
+libEngine.dll+4A8180 - 83 FB FF              - cmp ebx,-01
+}
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>2</ID>
+          <Description>"坐標X"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>0</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>3</ID>
+          <Description>"坐標Y(F2降低高度)"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>4</Offset>
+          </Offsets>
+          <Hotkeys>
+            <Hotkey OnlyWhileDown="1">
+              <Action>Set Value</Action>
+              <Keys>
+                <Key>113</Key>
+              </Keys>
+              <Value>-2000000</Value>
+              <ID>0</ID>
+            </Hotkey>
+          </Hotkeys>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>4</ID>
+          <Description>"坐標Z"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>8</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637944</ID>
+          <Description>"人物模型水平角度1"</Description>
+          <ShowAsSigned>1</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>14</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637945</ID>
+          <Description>"人物模型水平角度2"</Description>
+          <ShowAsSigned>1</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>1C</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637946</ID>
+          <Description>"自己的X大小(仅自己能看到)"</Description>
+          <ShowAsSigned>1</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>20</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637947</ID>
+          <Description>"自己的Y大小(仅自己能看到)"</Description>
+          <ShowAsSigned>1</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>24</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637948</ID>
+          <Description>"自己的Z大小(仅自己能看到)"</Description>
+          <ShowAsSigned>1</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>28</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637949</ID>
+          <Description>"人物模型偏航角度1"</Description>
+          <ShowAsSigned>1</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>10</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637950</ID>
+          <Description>"人物模型偏航角度2"</Description>
+          <ShowAsSigned>1</ShowAsSigned>
+          <VariableType>Float</VariableType>
+          <Address>POS</Address>
+          <Offsets>
+            <Offset>18</Offset>
+          </Offsets>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637951</ID>
+          <Description>"自己模型水平方向旋转(先获取人物信息)"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$Lua}
+if syntaxcheck then return end
+
+[ENABLE]
+horizontal_thread = createNativeThread(function (thread)
+  thread.freeOnTerminate(false)
+  thread.Name = 'horizontal_thread'
+
+  -- 旋转参数配置
+  local angle = 0               -- 初始角度(弧度)
+  local angularSpeed = math.pi   -- 角速度(弧度/秒)，这里设为π rad/s(即180°/s)
+  local updateInterval = 0.02    -- 更新间隔(秒)，即10毫秒
+
+  -- 计算每次更新的角度增量
+  local angleIncrement = angularSpeed * updateInterval
+
+  -- 高精度等待函数(毫秒级)
+  local function preciseWait(ms)
+      local start = os.clock()
+      while (os.clock() - start) * 1000 &lt; ms do end
+  end
+
+  while not thread.Terminated do
+    -- 计算正弦和余弦值
+    local value1 = math.cos(angle)
+    local value2 = math.sin(angle)
+
+    -- 写入内存
+    writeFloat("[POS]+14", value1)
+    writeFloat("[POS]+1C", value2)
+
+    -- 按恒定角速度增加角度
+    angle = angle + angleIncrement
+
+    -- 角度归一化(保持在0-2π范围内)
+    if angle &gt; 2 * math.pi then
+      angle = angle - 2 * math.pi
+    end
+
+    -- 精确等待以保持恒定速度
+    preciseWait(updateInterval * 300) -- 转换为毫秒
+  end
+end)
+
+[DISABLE]
+if horizontal_thread then -- kill thread
+   horizontal_thread.terminate()
+   horizontal_thread.waitfor()
+   horizontal_thread.destroy()
+   horizontal_thread=nil
+end
+</AssemblerScript>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807637952</ID>
+          <Description>"自己模型垂直方向旋转(先获取人物信息)"</Description>
+          <VariableType>Auto Assembler Script</VariableType>
+          <AssemblerScript>{$Lua}
+if syntaxcheck then return end
+
+[ENABLE]
+-- 圆周倾斜参数配置
+local amplitude = 0.7       -- 倾斜幅度
+local angularSpeed = math.pi  -- 角速度(弧度/秒)，π=180度/秒
+local updateInterval = 0.02   -- 更新间隔(秒)，20毫秒
+
+-- 计算每次更新的角度增量
+local angleIncrement = angularSpeed * updateInterval
+local angle = 0  -- 初始角度
+
+-- 高精度等待函数(毫秒级)
+local function preciseWait(ms)
+    local start = os.clock()
+    while (os.clock() - start) * 1000 &lt; ms do end
+end
+
+oscillate_thread = createNativeThread(function (thread)
+  thread.freeOnTerminate(false)
+  thread.Name = 'oscillate_thread'
+
+  while not thread.Terminated do
+    -- 每次循环读取基址
+    local baseAddr = readQword("POS")
+    local addr1 = baseAddr + 0x10  -- 前后倒
+    local addr2 = baseAddr + 0x18  -- 左右倒
+
+    -- 计算圆周倾斜：前后倒用sin，左右倒用cos
+    local forwardTilt = math.sin(angle) * amplitude
+    local rightTilt = math.cos(angle) * amplitude
+
+    -- 写入内存
+    writeFloat(addr1, forwardTilt)
+    writeFloat(addr2, rightTilt)
+
+    -- 按恒定角速度增加角度
+    angle = angle + angleIncrement
+
+    -- 角度归一化(保持在0-2π范围内)
+    if angle &gt; 2 * math.pi then
+      angle = angle - 2 * math.pi
+    end
+
+    -- 精确等待以保持恒定速度
+    preciseWait(updateInterval * 300)  -- 转换为毫秒
+  end
+end)
+
+[DISABLE]
+if oscillate_thread then
+   oscillate_thread.terminate()
+   oscillate_thread.waitfor()
+   oscillate_thread.destroy()
+   oscillate_thread = nil
+end
+</AssemblerScript>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689679</ID>
+      <Description>"地图ID"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>8 Bytes</VariableType>
+      <Address>libiworld.dll+1B7A918</Address>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1807637807</ID>
+          <Description>"谁是枪神(地图ID:13904657468465)"</Description>
+          <Options moHideChildren="1"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>1807689491</ID>
+              <Description>"无限子弹类"</Description>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1807637769</ID>
+                  <Description>"谁是枪神刀快速攻击+超远距离+范围25格攻击(需要普通小刀)"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern1 = "00 00 00 00 00 72 A7 40"  -- 3001.0的双精度浮点特征码
+local mainPattern2 = "00 00 00 00 00 74 A7 40"  -- 第二个特征码
+local scanRadius = 4096                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults1 = AOBScan(mainPattern1)
+local mainResults2 = AOBScan(mainPattern2)
+
+if mainResults1 == nil and mainResults2 == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理第一个特征码的结果
+if mainResults1 then
+    for i = 0, mainResults1.Count - 1 do
+        local baseAddr = tonumber(mainResults1[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配25.0并改成2500.0
+                if val == 25.0 then
+                    writeDouble(searchAddr, 2500.0)
+                    modified = true
+                end
+
+                -- 精确匹配36.0并改成10000.0
+                if val == 36.0 then
+                    writeDouble(searchAddr, 10000.0)
+                    modified = true
+                end
+
+                -- 精确匹配1000.0并改成0.0
+                if val == 1000.0 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+
+                -- 精确匹配150.0并改成100000.0
+                if val == 150.0 then
+                    writeDouble(searchAddr, 100000.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults1.destroy()
+end
+
+-- 处理第二个特征码的结果
+if mainResults2 then
+    for i = 0, mainResults2.Count - 1 do
+        local baseAddr = tonumber(mainResults2[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配25.0并改成2500.0
+                if val == 25.0 then
+                    writeDouble(searchAddr, 2500.0)
+                    modified = true
+                end
+
+                -- 精确匹配36.0并改成10000.0
+                if val == 36.0 then
+                    writeDouble(searchAddr, 10000.0)
+                    modified = true
+                end
+
+                -- 精确匹配1000.0并改成0.0
+                if val == 1000.0 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+
+                -- 精确匹配150.0并改成100000.0
+                if val == 150.0 then
+                    writeDouble(searchAddr, 100000.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults2.destroy()
+end
+
+if modified then
+    ShowMessage("开启小刀暴力杀戮成功.\n目标数据:\n普通小刀攻击半径:2500(25格,参数最佳)\n普通小刀攻击距离:无限\n普通小刀工具冷却:0\n可能没效果,那就重进游戏再开一次")
+else
+    ShowMessage("开启功能失败,没有找到对应目标数据")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637830</ID>
+                  <Description>"谁是枪神弹簧球无间隔2802"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern1 = "00 00 00 00 00 E4 A5 40"  -- 第一个特征码
+local mainPattern2 = "00 00 00 00 00 E6 A5 40"  -- 第二个特征码
+local scanRadius = 4096                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults1 = AOBScan(mainPattern1)
+local mainResults2 = AOBScan(mainPattern2)
+
+if mainResults1 == nil and mainResults2 == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理第一个特征码的结果（1350.0 改 0）
+if mainResults1 then
+    for i = 0, mainResults1.Count - 1 do
+        local baseAddr = tonumber(mainResults1[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配1350.0并改成0.0
+                if math.abs(val - 1350.0) &lt; 0.0001 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults1.destroy()
+end
+
+-- 处理第二个特征码的结果（1350.0 改 0）
+if mainResults2 then
+    for i = 0, mainResults2.Count - 1 do
+        local baseAddr = tonumber(mainResults2[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配1350.0并改成0.0
+                if math.abs(val - 1350.0) &lt; 0.0001 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults2.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将1350.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到1350.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637833</ID>
+                  <Description>"谁是枪神等离子发射器无间隔(很高概率修改失败)2810"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 F4 A5 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径（2KB）
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值（2KB范围）
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配250.0并改成0.0
+                if math.abs(val - 250.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将250.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到250.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637845</ID>
+                  <Description>"谁是枪神老式炸弹无间隔2811"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 F6 A5 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径（2KB）
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值（2KB范围）
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配100.0并改成0.0
+                if math.abs(val - 750.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将100.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到100.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637819</ID>
+                  <Description>"谁是枪神火药桶无间隔2812"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 F8 A5 40"  -- 特征码
+local scanRadius = 4096                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配750.0并改成0.0
+                if math.abs(val - 750.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将750.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到750.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637837</ID>
+                  <Description>"谁是枪神爆音吉他无间隔(很高概率修改失败)2816"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 00 A6 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径（2KB）
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值（2KB范围）
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配500.0并改成0.0
+                if math.abs(val - 500.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将500.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到500.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637842</ID>
+                  <Description>"谁是枪神弹弓无间隔2824"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 10 A6 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配170.0并改成0.0
+                if math.abs(val - 170.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将170.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到170.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637847</ID>
+                  <Description>"谁是枪神魔法书无间隔2825"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 12 A6 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配170.0并改成0.0
+                if math.abs(val - 500.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将170.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到170.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637849</ID>
+                  <Description>"谁是枪神太阳花无间隔2826"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 14 A6 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配170.0并改成0.0
+                if math.abs(val - 500.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将170.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到170.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637835</ID>
+                  <Description>"谁是枪神黄金炸弹无间隔2829"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 1A A6 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径（2KB）
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值（2KB范围）
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配100.0并改成0.0
+                if math.abs(val - 100.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将100.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到100.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637817</ID>
+                  <Description>"谁是枪神新春鞭炮无间隔2830"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 1C A6 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配750.0并改成0.0
+                if math.abs(val - 750.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将750.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到750.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807637844</ID>
+              <Description>"有限子弹类"</Description>
+              <GroupHeader>1</GroupHeader>
+              <CheatEntries>
+                <CheatEntry>
+                  <ID>1807637810</ID>
+                  <Description>"谁是枪神修改妙脆角射速2237"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 7A A1 40"  -- 新的特征码
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配120.0并改成0.0
+                if math.abs(val - 120.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将120.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到120.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637812</ID>
+                  <Description>"谁是枪神巴雷特超高射速2709"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 2A A5 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配500.0并改成0.0
+                if math.abs(val - 500.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将500.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到500.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637814</ID>
+                  <Description>"谁是枪神火焰南瓜无间隔2804"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 E8 A5 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配500.0并改成0.0
+                if math.abs(val - 500.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将500.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到500.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637822</ID>
+                  <Description>"谁是枪神烟花发射器速射(2603+2604)"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern1 = "00 00 00 00 00 56 A4 40"  -- 第一个特征码
+local mainPattern2 = "00 00 00 00 00 58 A4 40"  -- 第二个特征码
+local scanRadius = 2048                        -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults1 = AOBScan(mainPattern1)
+local mainResults2 = AOBScan(mainPattern2)
+
+if mainResults1 == nil and mainResults2 == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理第一个特征码的结果（1000.0 改 0）
+if mainResults1 then
+    for i = 0, mainResults1.Count - 1 do
+        local baseAddr = tonumber(mainResults1[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配1000.0并改成0.0
+                if math.abs(val - 1000.0) &lt; 0.0001 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults1.destroy()
+end
+
+-- 处理第二个特征码的结果（1050.0 改 0）
+if mainResults2 then
+    for i = 0, mainResults2.Count - 1 do
+        local baseAddr = tonumber(mainResults2[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配1050.0并改成0.0
+                if math.abs(val - 1050.0) &lt; 0.0001 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults2.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将1000.0和1050.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637827</ID>
+                  <Description>"谁是枪神手炮和爆炸枪无间隔(2606+2605)"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern1 = "00 00 00 00 00 5A A4 40"  -- 第一个特征码（1120）
+local mainPattern2 = "00 00 00 00 00 5C A4 40"  -- 第二个特征码（1300）
+local scanRadius = 2048                         -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults1 = AOBScan(mainPattern1)
+local mainResults2 = AOBScan(mainPattern2)
+
+if mainResults1 == nil and mainResults2 == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理第一个特征码的结果（1120.0 改 0）
+if mainResults1 then
+    for i = 0, mainResults1.Count - 1 do
+        local baseAddr = tonumber(mainResults1[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配1120.0并改成0.0
+                if math.abs(val - 1120.0) &lt; 0.0001 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults1.destroy()
+end
+
+-- 处理第二个特征码的结果（1300.0 改 0）
+if mainResults2 then
+    for i = 0, mainResults2.Count - 1 do
+        local baseAddr = tonumber(mainResults2[i], 16)
+
+        -- 在当前地址附近搜索目标数值
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配1300.0并改成0.0
+                if math.abs(val - 1300.0) &lt; 0.0001 then
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults2.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将1120.0和1300.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+                <CheatEntry>
+                  <ID>1807637840</ID>
+                  <Description>"谁是枪神RPG无间隔(2601)"</Description>
+                  <VariableType>Auto Assembler Script</VariableType>
+                  <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "00 00 00 00 00 52 A4 40"  -- 特征码
+local scanRadius = 2048                         -- 搜索半径（2KB）
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地址
+local checkValue = 13904657468465                -- 需要匹配的值
+-- =====================
+
+-- 首先检查指定地址的值
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("您不在指定地图内,请手动前往此地图:\n谁是枪神(地图ID:13904657468465)")
+    return
+end
+
+-- 值匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+
+if mainResults == nil then
+    ShowMessage("没有扫描到目标数据")
+    return
+end
+
+local modified = false
+
+-- 处理特征码的结果
+if mainResults then
+    for i = 0, mainResults.Count - 1 do
+        local baseAddr = tonumber(mainResults[i], 16)
+
+        -- 在当前地址附近搜索目标数值（2KB范围）
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local val = readDouble(searchAddr)
+            if val then
+                -- 精确匹配3500.0并改成0.0
+                if math.abs(val - 3500.0) &lt; 0.0001 then  -- 使用容差判断浮点数
+                    writeDouble(searchAddr, 0.0)
+                    modified = true
+                end
+            end
+        end
+    end
+    mainResults.destroy()
+end
+
+if modified then
+    ShowMessage("修改成功！\n已将3500.0的值修改为0.0")
+else
+    ShowMessage("修改失败，没有找到3500.0的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+                </CheatEntry>
+              </CheatEntries>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807689669</ID>
+          <Description>"谁是狙神(地图ID:66216747133063)"</Description>
+          <Options moHideChildren="1"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>1807689670</ID>
+              <Description>"静默自瞄(专属于66216747133063)"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+local targetPattern = "52 B8 1E 85 EB 51 15 40"
+local scanRadius = 256
+local modifyMap = {
+    [0.5]   = 60.0,
+    [5.33]  = 30.0,
+    [1.0]  = 180.0,
+    [180.0]  = 3600,
+    [16.0]  = 160.0,
+    [6.0]   = 180.0,
+}
+local results = AOBScan(targetPattern)
+if results == nil then
+    return
+end
+local matchCount = 0
+local modifiedCount = 0
+for i = 0, results.Count - 1 do
+    local baseAddr = tonumber(results[i], 16)
+    local startAddr = math.max(baseAddr - scanRadius, 0)
+    local endAddr = baseAddr + scanRadius
+    local foundAny = false
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value then
+            for origVal, newVal in pairs(modifyMap) do
+                if math.abs(value - origVal) &lt; 0.001 then
+                    writeDouble(searchAddr, newVal)
+                    modifiedCount = modifiedCount + 1
+                    foundAny = true
+                    break
+                end
+            end
+        end
+    end
+
+    if foundAny then
+        matchCount = matchCount + 1
+    else
+    end
+end
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807689671</ID>
+              <Description>"快速切枪卡无间隔射击"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+local targetPattern = "9A 99 99 99 99 99 F1 3F"
+local scanRadius = 1024
+local targetValues = {
+    3.3
+}
+local matchedResults = {}
+local results = AOBScan(targetPattern)
+if results == nil then
+    print("未找到特征码")
+    return
+end
+for i = 0, results.Count - 1 do
+    local baseAddr = tonumber(results[i], 16)
+    local startAddr = math.max(baseAddr - scanRadius, 0)
+    local endAddr = baseAddr + scanRadius
+    local foundValues = {}
+    local foundAddresses = {}
+
+    for targetIdx, targetVal in ipairs(targetValues) do
+        foundValues[targetIdx] = false
+        foundAddresses[targetIdx] = nil
+    end
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value then
+            for targetIdx, targetVal in ipairs(targetValues) do
+                if not foundValues[targetIdx] and math.abs(value - targetVal) &lt; 0.001 then
+                    foundValues[targetIdx] = true
+                    foundAddresses[targetIdx] = searchAddr
+                    break
+                end
+            end
+        end
+    end
+    local allFound = true
+    for _, found in ipairs(foundValues) do
+        if not found then
+            allFound = false
+            break
+        end
+    end
+    if allFound then
+        table.insert(matchedResults, {
+            patternAddress = baseAddr,
+            foundAddresses = foundAddresses,
+            foundValues = targetValues
+        })
+    end
+end
+
+results.destroy()
+if #matchedResults == 0 then
+else
+    for idx, match in ipairs(matchedResults) do
+        for valIdx, addr in ipairs(match.foundAddresses) do
+            if addr then
+                local oldVal = readDouble(addr)
+                writeDouble(addr, 0.0)
+                local newVal = readDouble(addr)
+           end
+        end
+        local patternAddr = match.patternAddress
+        local oldPatternVal = readDouble(patternAddr)
+        writeDouble(patternAddr, 0.0)
+        local newPatternVal = readDouble(patternAddr)
+   end
+end
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>392260</ID>
+              <Description>"小刀超高普通攻速"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+local targetPattern = "7B 14 AE 47 E1 7A C4 3F"
+local scanRadius = 512
+local modifyMap = {
+    [0.7]   = 0.01,
+    [0.06]  = 0.01,
+    [0.16]  = 1.0,
+    [0.12]  = 0.01,
+    [200.0] = 20000.0,
+}
+local results = AOBScan(targetPattern)
+if results == nil then
+    print("未找到主特征码")
+    return
+end
+
+local matchCount = 0
+local modifiedCount = 0
+
+for i = 0, results.Count - 1 do
+    local baseAddr = tonumber(results[i], 16)
+    local startAddr = math.max(baseAddr - scanRadius, 0)
+    local endAddr = baseAddr + scanRadius
+
+    local foundAny = false
+    local oldPatternVal = readDouble(baseAddr)
+    if oldPatternVal then
+       writeDouble(baseAddr, 0.01)
+        modifiedCount = modifiedCount + 1
+        foundAny = true
+    end
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value then
+            for origVal, newVal in pairs(modifyMap) do
+                if math.abs(value - origVal) &lt; 0.001 then
+                   writeDouble(searchAddr, newVal)
+                    modifiedCount = modifiedCount + 1
+                    foundAny = true
+                    break
+                end
+            end
+        end
+    end
+
+    if foundAny then
+        matchCount = matchCount + 1
+    else
+    end
+end
+
+[DISABLE]
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807689677</ID>
+              <Description>"小刀超高重击攻速"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+local targetPattern = "B8 1E 85 EB 51 B8 CE 3F"
+local scanRadius = 512
+local modifyMap = {
+    [1.0]   = 0.01,
+    [0.07]  = 0.01,
+    [0.24]  = 1.0,
+    [0.4]  = 0.01,
+    [200.0] = 20000.0,
+}
+-- =====================
+
+local results = AOBScan(targetPattern)
+if results == nil then
+    print("未找到主特征码")
+    return
+end
+
+local matchCount = 0
+local modifiedCount = 0
+
+for i = 0, results.Count - 1 do
+    local baseAddr = tonumber(results[i], 16)
+    local startAddr = math.max(baseAddr - scanRadius, 0)
+    local endAddr = baseAddr + scanRadius
+
+    local foundAny = false
+
+    local oldPatternVal = readDouble(baseAddr)
+    if oldPatternVal then
+       writeDouble(baseAddr, 0.01)
+        modifiedCount = modifiedCount + 1
+        foundAny = true
+    end
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value then
+            for origVal, newVal in pairs(modifyMap) do
+                if math.abs(value - origVal) &lt; 0.001 then
+                   writeDouble(searchAddr, newVal)
+                    modifiedCount = modifiedCount + 1
+                    foundAny = true
+                    break
+                end
+            end
+        end
+    end
+
+    if foundAny then
+        matchCount = matchCount + 1
+    else
+    end
+end
+
+[DISABLE]
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807689672</ID>
+              <Description>"速射(需要仓库切一下枪)"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+local targetPattern = "7B 14 AE 47 E1 7A 74 3F"
+local scanRadius = 1024
+local targetValue1 = 41.0
+local targetValue2 = 75.0
+local targetValue3 = 0.15
+local results = AOBScan(targetPattern)
+if results == nil then
+    print("未找到主特征码")
+    return
+end
+local matchCount = 0
+local modifiedCount = 0
+
+for i = 0, results.Count - 1 do
+    local baseAddr = tonumber(results[i], 16)
+    local startAddr = math.max(baseAddr - scanRadius, 0)
+    local endAddr = baseAddr + scanRadius
+    local foundAny = false
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value and math.abs(value - targetValue1) &lt; 0.001 then
+            writeDouble(searchAddr, 4000.0)
+            modifiedCount = modifiedCount + 1
+            foundAny = true
+        end
+    end
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value and math.abs(value - targetValue2) &lt; 0.001 then
+            writeDouble(searchAddr, 1000.0)
+            modifiedCount = modifiedCount + 1
+            foundAny = true
+        end
+    end
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value and math.abs(value - targetValue3) &lt; 0.001 then
+            writeDouble(searchAddr, 0.0)
+            modifiedCount = modifiedCount + 1
+            foundAny = true
+        end
+    end
+
+    if foundAny then
+        matchCount = matchCount + 1
+    end
+end
+
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807689610</ID>
+          <Description>"谁是狼人(地图ID:66711258790998)"</Description>
+          <Options moHideChildren="1"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>1807637716</ID>
+              <Description>"狼人快速普通攻击"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local pattern = "33 33 33 33 33 33 D3 3F 33 33 33 33 33 33 D3 3F 9A 99 99 99 99 99 D9 3F"
+local scanRadius = 2048
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地图ID地址
+local checkValue = 66711258790998                -- 需要匹配的地图ID
+-- =====================
+
+-- 首先检查地图ID
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("开启失败：无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("开启失败：您不在指定地图内\n请手动前往此地图:谁是狼人(地图ID:66711258790998)")
+    return
+end
+
+-- 地图匹配，执行扫描
+local results = AOBScan(pattern)
+if results == nil then
+    ShowMessage("开启失败：没有发现目标数据")
+    return
+end
+
+local modified = false
+
+for i = 0, results.Count - 1 do
+    local baseAddr = tonumber(results[i], 16)
+    modified = true
+
+    -- 修改主特征码
+    writeDouble(baseAddr, 0.0)
+    writeDouble(baseAddr + 8, 0.0)
+    writeDouble(baseAddr + 16, 0.0)
+
+    -- 附近搜索连续的3个2.0
+    local startAddr = baseAddr - scanRadius
+    if startAddr &lt; 0 then startAddr = 0 end
+    local endAddr = baseAddr + scanRadius
+
+    for searchAddr = startAddr, endAddr - 16, 8 do
+        local v1 = readDouble(searchAddr)
+        local v2 = readDouble(searchAddr + 8)
+        local v3 = readDouble(searchAddr + 16)
+
+        if v1 and v2 and v3 then
+            if math.abs(v1 - 2.0) &lt; 0.001 and
+               math.abs(v2 - 2.0) &lt; 0.001 and
+               math.abs(v3 - 2.0) &lt; 0.001 then
+
+                writeDouble(searchAddr, 0.0)
+                writeDouble(searchAddr + 8, 0.0)
+                writeDouble(searchAddr + 16, 0.0)
+            end
+        end
+    end
+end
+
+results.destroy()
+
+if modified then
+    ShowMessage("开启成功")
+else
+    ShowMessage("开启失败：没有找到匹配的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807637714</ID>
+              <Description>"手枪快速攻击+超远射程"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local mainPattern = "?? ?? ?? ?? FF FF FF FF 00 00 00 00 00 00 08 40 00 00 00 00 00 00 08 40 00 00 00 00 00 00 08 40 ?? ?? ?? ?? FF FF FF FF"
+local searchValue = 30000.0        -- 要搜索的数值
+local newValue = 1000000.0          -- 要修改成的数值（改成1000000.0）
+local scanRadius = 1024
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地图ID地址
+local checkValue = 66711258790998                -- 需要匹配的地图ID
+-- =====================
+
+-- 首先检查地图ID
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("开启失败：无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("开启失败：您不在指定地图内\n请手动前往此地图:谁是狼人(地图ID:66711258790998)")
+    return
+end
+
+-- 地图匹配，执行扫描
+local mainResults = AOBScan(mainPattern)
+if mainResults == nil then
+    ShowMessage("开启失败：没有发现目标数据")
+    return
+end
+
+local targetStartOffset = 8
+local modified = false
+
+for i = 0, mainResults.Count - 1 do
+    local baseAddr = tonumber(mainResults[i], 16)
+    modified = true
+
+    -- 修改主特征码中的3个连续双精度浮点数为0.0
+    for j = 0, 2 do
+        writeDouble(baseAddr + targetStartOffset + (j * 8), 0.0)
+    end
+
+    -- 在当前地址附近搜索30000.0并修改为1000000.0
+    local startAddr = baseAddr - scanRadius
+    if startAddr &lt; 0 then startAddr = 0 end
+    local endAddr = baseAddr + scanRadius
+
+    for searchAddr = startAddr, endAddr, 8 do
+        local val = readDouble(searchAddr)
+        if val and val &gt; (searchValue - 0.001) and val &lt; (searchValue + 0.001) then
+            writeDouble(searchAddr, newValue)
+        end
+    end
+end
+
+mainResults.destroy()
+
+if modified then
+    ShowMessage("开启成功")
+else
+    ShowMessage("开启失败：没有找到匹配的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807637713</ID>
+              <Description>"强化飞刀技能区域快速"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+-- 原配置
+local targetPattern1 = "00 00 00 00 80 CA C9 40"  -- 13205.0的特征码
+local targetValue1 = 10.0                          -- 要匹配的数值1
+
+-- 新增配置
+local targetPattern2 = "00 00 00 00 80 96 C9 40"  -- 15.0的特征码
+local targetValue2 = 15.0                          -- 要匹配的数值2
+
+local scanRadius = 1024                            -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"    -- 需要检查的地图ID地址
+local checkValue = 66711258790998                -- 需要匹配的地图ID
+-- =====================
+
+-- 首先检查地图ID
+local addr = getAddress(checkAddress)
+if addr == 0 then
+    ShowMessage("开启失败：无法获取地图ID")
+    return
+end
+
+local addrValue = readQword(addr)  -- 读取8字节整数
+if addrValue ~= checkValue then
+    -- 地图不匹配，显示提示信息
+    ShowMessage("开启失败：您不在指定地图内\n请手动前往此地图:谁是狼人(地图ID:66711258790998)")
+    return
+end
+
+local modified = false
+
+-- 处理第一个特征码和数值
+local results1 = AOBScan(targetPattern1)
+if results1 ~= nil then
+    for i = 0, results1.Count - 1 do
+        local baseAddr = tonumber(results1[i], 16)
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local cdValue = readDouble(searchAddr)
+            if cdValue and cdValue &gt; (targetValue1 - 0.001) and cdValue &lt; (targetValue1 + 0.001) then
+                writeDouble(searchAddr, 0.1)
+                modified = true
+            end
+        end
+    end
+    results1.destroy()
+end
+
+-- 处理新增的第二个特征码和数值
+local results2 = AOBScan(targetPattern2)
+if results2 ~= nil then
+    for i = 0, results2.Count - 1 do
+        local baseAddr = tonumber(results2[i], 16)
+        local startAddr = baseAddr - scanRadius
+        if startAddr &lt; 0 then startAddr = 0 end
+        local endAddr = baseAddr + scanRadius
+
+        for searchAddr = startAddr, endAddr, 8 do
+            local cdValue = readDouble(searchAddr)
+            if cdValue and cdValue &gt; (targetValue2 - 0.001) and cdValue &lt; (targetValue2 + 0.001) then
+                writeDouble(searchAddr, 0.01)
+                modified = true
+            end
+        end
+    end
+    results2.destroy()
+end
+
+if modified then
+    ShowMessage("开启成功")
+else
+    ShowMessage("开启失败：没有找到匹配的目标数值")
+end
+
+[DISABLE]
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807637717</ID>
+              <Description>"改分数(获取的)"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+{$Lua}
+-- ===== 用户配置区 =====
+local targetPattern = "00 00 00 00 00 40 7F 40"  -- 特征码
+local scanRadius = 1024                          -- 搜索半径
+local checkAddress = "libiworld.dll+1B7A918"     -- 地图ID地址
+local checkValue = 66711258790998                -- 地图ID
+local newValue = 999999.0                        -- 要修改的新值
+
+-- 需要匹配的双精度浮点数值（允许多个相同值）
+local targetValues = {
+    500.0,   -- KillCriminal (1次)
+    150.0,   -- KillGood (1次)
+    7.0,     -- GoodSurvivceScore (1次)
+    100.0,   -- SavePeopleScore (1次)
+    1.5,     -- WinMagnification (1次)
+    300.0,   -- BaseCriminalScore (1次)
+}
+-- =====================
+
+-- 检查地图ID
+local addr = getAddress(checkAddress)
+if addr == 0 or readQword(addr) ~= checkValue then
+    return
+end
+
+-- 扫描特征码
+local results = AOBScan(targetPattern)
+if results == nil then
+    return
+end
+
+local modifiedCount = 0
+
+-- 遍历每个特征码位置
+for i = 0, results.Count - 1 do
+    local baseAddr = tonumber(results[i], 16)
+    local startAddr = math.max(baseAddr - scanRadius, 0)
+    local endAddr = baseAddr + scanRadius
+
+    -- 创建需要匹配的数值副本（用于计数）
+    local needToFind = {}
+    for _, val in ipairs(targetValues) do
+        needToFind[#needToFind + 1] = val
+    end
+
+    -- 记录需要修改的地址
+    local addressesToModify = {}
+
+    -- 搜索并记录匹配到的数值地址
+    for searchAddr = startAddr, endAddr, 8 do
+        local value = readDouble(searchAddr)
+        if value then
+            -- 查找并记录匹配的数值
+            for j = #needToFind, 1, -1 do
+                if math.abs(value - needToFind[j]) &lt; 0.001 then
+                    addressesToModify[searchAddr] = true
+                    table.remove(needToFind, j)
+                    break
+                end
+            end
+        end
+    end
+
+    -- 如果所有数值都找到了，进行修改
+    if #needToFind == 0 then
+        for addr, _ in pairs(addressesToModify) do
+            writeDouble(addr, newValue)
+            modifiedCount = modifiedCount + 1
+        end
+        print(string.format("特征码地址 0x%X: 已修改 %d 个数值为 %.0f", baseAddr, #targetValues, newValue))
+    end
+end
+
+if modifiedCount &gt; 0 then
+    print(string.format("修改完成，共修改 %d 个数值", modifiedCount))
+end
+
+results.destroy()
+
+[DISABLE]
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+        <CheatEntry>
+          <ID>1807689678</ID>
+          <Description>"三角洲行动-全新枪械(地图ID;3255730279098)"</Description>
+          <Options moHideChildren="1"/>
+          <GroupHeader>1</GroupHeader>
+          <CheatEntries>
+            <CheatEntry>
+              <ID>1807622057</ID>
+              <Description>"三角洲防閃"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(fangshan,00 00 00 00 00 00 F0 3F 00 00 00 00 00 00 3E 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 59 40)
+fangshan+8:
+DQ (double)0
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807619411</ID>
+              <Description>"三角洲防抖(執行兩次)"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(fangdou,00 00 00 00 00 00 59 40 66 66 66 66 66 66 E6 3F 9A 99 99 99 99 99 B9 3F)
+fangdou:
+DQ (double)100000.00
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807622058</ID>
+              <Description>"三角洲當前版本無後座+防抖一體脚本"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(houzuoli,0A D7 A3 70 3D 0A B7 3F 7B 14 AE 47 E1 7A B4 3F)
+houzuoli-68:
+DQ (double)100000
+houzuoli-40:
+DQ (double)0
+houzuoli-38:
+DQ (double)0
+houzuoli:
+DQ (double)100000
+houzuoli+8:
+DQ (double)100000
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807622056</ID>
+              <Description>"三角洲無後座"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(houzuoli,0A D7 A3 70 3D 0A B7 3F 7B 14 AE 47 E1 7A B4 3F)
+houzuoli-40:
+DQ (double)0
+houzuoli-38:
+DQ (double)0
+houzuoli:
+DQ (double)100000
+houzuoli+8:
+DQ (double)100000
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807622055</ID>
+              <Description>"三角洲無擴散"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(kuosan,00 00 00 00 00 00 F8 3F 00 00 00 00 00 00 59 40)
+kuosan:
+DQ (double)0
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807621663</ID>
+              <Description>"三角洲加快射速"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(shesu,00 00 00 00 00 00 4E 40 9A 99 99 99 99 99 F1 3F)
+shesu+8:
+DQ (double)0.01
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807621699</ID>
+              <Description>"三角洲增加射程"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(shecheng,00 00 00 00 00 00 59 40 09 C0 01)
+shecheng:
+DQ (double)1000.00
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807622054</ID>
+              <Description>"三角洲子彈飛行速度加快"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(feixingsudu,00 00 00 00 00 00 59 40 00 00 00 00 00 40 8F 40 00 00 00 00 00 00 00 40 00 00 00 00 00 00 14 40)
+feixingsudu:
+DQ (double)1000.00
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+          </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+  </CheatEntries>
+  <UserdefinedSymbols/>
+</CheatTable>
