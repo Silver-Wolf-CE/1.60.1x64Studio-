@@ -2735,7 +2735,7 @@ DQ (double)0
               <AssemblerScript>[ENABLE]
 aobScan(shesu,00 00 00 00 00 00 4E 40 9A 99 99 99 99 99 F1 3F)
 shesu+8:
-DQ (double)0.01
+DQ (double)0.001
 [DISABLE]
 
 </AssemblerScript>
