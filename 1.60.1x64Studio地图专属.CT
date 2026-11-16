@@ -2747,7 +2747,7 @@ DQ (double)0.001
               <AssemblerScript>[ENABLE]
 aobScan(shecheng,00 00 00 00 00 00 59 40 09 C0 01)
 shecheng:
-DQ (double)1000.00
+DQ (double)10000.00
 [DISABLE]
 
 </AssemblerScript>
