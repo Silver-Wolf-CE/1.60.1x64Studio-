@@ -42,16 +42,6 @@ luacall(cycleFullCompact(nil,false))
       </Offsets>
     </CheatEntry>
     <CheatEntry>
-      <ID>1807689680</ID>
-      <Description>"当前登入的账号UIN"</Description>
-      <ShowAsSigned>0</ShowAsSigned>
-      <VariableType>4 Bytes</VariableType>
-      <Address>libiworld.dll+1A790D0</Address>
-      <Offsets>
-        <Offset>8</Offset>
-      </Offsets>
-    </CheatEntry>
-    <CheatEntry>
       <ID>1</ID>
       <Description>"当前登入的账号昵称"</Description>
       <ShowAsSigned>0</ShowAsSigned>
@@ -424,23 +414,13 @@ libEngine.dll+4A8180 - 83 FB FF              - cmp ebx,-01
         </CheatEntry>
         <CheatEntry>
           <ID>3</ID>
-          <Description>"坐標Y(F2降低高度)"</Description>
+          <Description>"坐標Y"</Description>
           <ShowAsSigned>0</ShowAsSigned>
           <VariableType>Float</VariableType>
           <Address>POS</Address>
           <Offsets>
             <Offset>4</Offset>
           </Offsets>
-          <Hotkeys>
-            <Hotkey OnlyWhileDown="1">
-              <Action>Set Value</Action>
-              <Keys>
-                <Key>113</Key>
-              </Keys>
-              <Value>-2000000</Value>
-              <ID>0</ID>
-            </Hotkey>
-          </Hotkeys>
         </CheatEntry>
         <CheatEntry>
           <ID>4</ID>
@@ -2667,19 +2647,19 @@ DQ (double)0
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
-              <ID>1807619411</ID>
-              <Description>"三角洲防抖(執行兩次)"</Description>
+              <ID>1807622058</ID>
+              <Description>"三角洲抑制瞄准晃动"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobScan(fangdou,00 00 00 00 00 00 59 40 66 66 66 66 66 66 E6 3F 9A 99 99 99 99 99 B9 3F)
-fangdou:
-DQ (double)100000.00
+aobScan(AIM,00 00 00 00 00 00 F0 3F 00 00 00 00 00 00 E0 3F 33 33 33 33 33 33 E3 3F)
+AIM+8:
+DQ (double)1.00
 [DISABLE]
 
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
-              <ID>1807622058</ID>
+              <ID>1807690044</ID>
               <Description>"三角洲當前版本無後座+防抖一體脚本"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
@@ -2699,19 +2679,27 @@ DQ (double)100000
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
-              <ID>1807622056</ID>
-              <Description>"三角洲無後座"</Description>
+              <ID>1807621663</ID>
+              <Description>"三角洲加快射速"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
-aobScan(houzuoli,0A D7 A3 70 3D 0A B7 3F 7B 14 AE 47 E1 7A B4 3F)
-houzuoli-40:
-DQ (double)0
-houzuoli-38:
-DQ (double)0
-houzuoli:
-DQ (double)100000
-houzuoli+8:
-DQ (double)100000
+aobScan(shesu,00 00 00 00 00 00 4E 40 9A 99 99 99 99 99 F1 3F)
+shesu+8:
+DQ (double)0.001
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807690043</ID>
+              <Description>"三角洲加快所有动作速度+降低脚步频率(需要移动一下触发)"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(pinlv,00 00 00 00 00 40 6F 40 CD CC CC CC CC CC FC 3F 9A 99 99 99 99 99 B9 3F 00 00 00 00 00 40 7F 40 66 66 66 66 66 66 F6 3F)
+pinlv:
+DQ (double)1.00
+pinlv+8:
+DQ (double)10000000000.00
 [DISABLE]
 
 </AssemblerScript>
@@ -2729,25 +2717,13 @@ DQ (double)0
 </AssemblerScript>
             </CheatEntry>
             <CheatEntry>
-              <ID>1807621663</ID>
-              <Description>"三角洲加快射速"</Description>
-              <VariableType>Auto Assembler Script</VariableType>
-              <AssemblerScript>[ENABLE]
-aobScan(shesu,00 00 00 00 00 00 4E 40 9A 99 99 99 99 99 F1 3F)
-shesu+8:
-DQ (double)0.001
-[DISABLE]
-
-</AssemblerScript>
-            </CheatEntry>
-            <CheatEntry>
               <ID>1807621699</ID>
               <Description>"三角洲增加射程"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 aobScan(shecheng,00 00 00 00 00 00 59 40 09 C0 01)
 shecheng:
-DQ (double)10000.00
+DQ (double)1000.00
 [DISABLE]
 
 </AssemblerScript>
@@ -2765,6 +2741,60 @@ DQ (double)1000.00
 </AssemblerScript>
             </CheatEntry>
           </CheatEntries>
+        </CheatEntry>
+      </CheatEntries>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689744</ID>
+      <Description>"播放速度"</Description>
+      <ShowAsSigned>0</ShowAsSigned>
+      <VariableType>Float</VariableType>
+      <Address>libSandboxGame.dll+4871F68</Address>
+      <Offsets>
+        <Offset>50</Offset>
+      </Offsets>
+    </CheatEntry>
+    <CheatEntry>
+      <ID>1807689711</ID>
+      <Description>"获取玩家数量(除自己外)"</Description>
+      <VariableType>Auto Assembler Script</VariableType>
+      <AssemblerScript>[ENABLE]
+alloc(playernymber,8)
+registersymbol(playernymber)
+alloc(newmem,2048,"libiworld.dll"+649499) 
+label(returnhere)
+label(originalcode)
+label(exit)
+newmem:
+originalcode:
+sar rax,03
+push rbx
+mov rbx,playernymber
+mov [rbx],rax
+pop rbx
+cmp edi,eax
+exit:
+jmp returnhere
+"libiworld.dll"+649499:
+jmp newmem
+nop
+returnhere:
+[DISABLE]
+unregistersymbol(playernymber)
+dealloc(playernymber)
+dealloc(newmem)
+"libiworld.dll"+649499:
+db 48 C1 F8 03 3B F8
+//sar rax,03
+//cmp edi,eax
+</AssemblerScript>
+      <CheatEntries>
+        <CheatEntry>
+          <ID>1807689712</ID>
+          <Description>"玩家数量"</Description>
+          <ShowAsSigned>0</ShowAsSigned>
+          <VariableType>8 Bytes</VariableType>
+          <Address>playernymber</Address>
         </CheatEntry>
       </CheatEntries>
     </CheatEntry>
