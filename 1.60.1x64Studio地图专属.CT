@@ -2630,25 +2630,13 @@ results.destroy()
         </CheatEntry>
         <CheatEntry>
           <ID>1807689678</ID>
-          <Description>"三角洲行动-全新枪械(地图ID;3255730279098)"</Description>
+          <Description>"三角洲行动-全新枪械(地图ID:3255730279098)"</Description>
           <Options moHideChildren="1"/>
           <GroupHeader>1</GroupHeader>
           <CheatEntries>
             <CheatEntry>
-              <ID>1807622057</ID>
-              <Description>"三角洲防閃"</Description>
-              <VariableType>Auto Assembler Script</VariableType>
-              <AssemblerScript>[ENABLE]
-aobScan(fangshan,00 00 00 00 00 00 F0 3F 00 00 00 00 00 00 3E 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 59 40)
-fangshan+8:
-DQ (double)0
-[DISABLE]
-
-</AssemblerScript>
-            </CheatEntry>
-            <CheatEntry>
               <ID>1807622058</ID>
-              <Description>"三角洲抑制瞄准晃动"</Description>
+              <Description>"三角洲抑制瞄準晃動"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 aobScan(AIM,00 00 00 00 00 00 F0 3F 00 00 00 00 00 00 E0 3F 33 33 33 33 33 33 E3 3F)
@@ -2660,7 +2648,7 @@ DQ (double)1.00
             </CheatEntry>
             <CheatEntry>
               <ID>1807690044</ID>
-              <Description>"三角洲當前版本無後座+防抖一體脚本"</Description>
+              <Description>"三角洲無後座+防抖"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 aobScan(houzuoli,0A D7 A3 70 3D 0A B7 3F 7B 14 AE 47 E1 7A B4 3F)
@@ -2692,7 +2680,19 @@ DQ (double)0.001
             </CheatEntry>
             <CheatEntry>
               <ID>1807690043</ID>
-              <Description>"三角洲加快所有动作速度+降低脚步频率(需要移动一下触发)"</Description>
+              <Description>"三角洲大幅度探头(可穿墙打人)"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(tan,00 00 00 00 00 00 F0 3F 00 00 00 00 00 00 00 40 33 33 33 33 33 33 D3 3F 00 00 00 00 00 00 10 C0 00 00 00 00 00 80 56 40 00 00 00 00 00 80 56 C0)
+tan+18:
+DQ (double)-24.00//最大的偏移值了,再大命中就无效
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807690053</ID>
+              <Description>"三角洲加快動作+無脚步(需行動)"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 aobScan(pinlv,00 00 00 00 00 40 6F 40 CD CC CC CC CC CC FC 3F 9A 99 99 99 99 99 B9 3F 00 00 00 00 00 40 7F 40 66 66 66 66 66 66 F6 3F)
@@ -2718,12 +2718,12 @@ DQ (double)0
             </CheatEntry>
             <CheatEntry>
               <ID>1807621699</ID>
-              <Description>"三角洲增加射程"</Description>
+              <Description>"三角洲擴展射程"</Description>
               <VariableType>Auto Assembler Script</VariableType>
               <AssemblerScript>[ENABLE]
 aobScan(shecheng,00 00 00 00 00 00 59 40 09 C0 01)
 shecheng:
-DQ (double)1000.00
+DQ (double)10000.00
 [DISABLE]
 
 </AssemblerScript>
@@ -2735,7 +2735,19 @@ DQ (double)1000.00
               <AssemblerScript>[ENABLE]
 aobScan(feixingsudu,00 00 00 00 00 00 59 40 00 00 00 00 00 40 8F 40 00 00 00 00 00 00 00 40 00 00 00 00 00 00 14 40)
 feixingsudu:
-DQ (double)1000.00
+DQ (double)10000.00
+[DISABLE]
+
+</AssemblerScript>
+            </CheatEntry>
+            <CheatEntry>
+              <ID>1807622057</ID>
+              <Description>"三角洲防閃光弹"</Description>
+              <VariableType>Auto Assembler Script</VariableType>
+              <AssemblerScript>[ENABLE]
+aobScan(fangshan,00 00 00 00 00 00 F0 3F 00 00 00 00 00 00 3E 40 00 00 00 00 00 00 00 00 00 00 00 00 00 00 59 40)
+fangshan+8:
+DQ (double)0
 [DISABLE]
 
 </AssemblerScript>
